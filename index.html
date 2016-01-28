@@ -18,7 +18,7 @@ $(document).ready(function() {
     $('#implict_grant').click(function() {
         var app_id = $('#app_id').val();
         var redirect_uri = $('#redirect_uri').val();
-        window.location = 'https://www.binaryqa16.com/oauth/authorize?app_id=' + app_id + '&redirect_uri=' + redirect_uri;
+        window.location = 'https://www.binary.com/oauth/authorize?app_id=' + app_id + '&redirect_uri=' + redirect_uri;
     });
 
     var oauthParams = {},
@@ -31,7 +31,7 @@ $(document).ready(function() {
     console.log(oauthParams);
     if (oauthParams['token']) {
         $('#debug').append("<p>Get token: " + oauthParams['token'] + "</p>")
-        var ws = new WebSocket('wss://www.binaryqa16.com/websockets/v3');
+        var ws = new WebSocket('wss://ws.binary.com/websockets/v3');
         ws.onopen = function(evt) {
             ws.send(JSON.stringify({authorize: oauthParams['token']}));
         };
