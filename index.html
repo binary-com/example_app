@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Application</title>
+
+</head>
+<body>
+
+<div id="debug"></div>
+
+<input id='app_id' placeholder='App ID' />
+<input id='redirect_uri' placeholder='Redirect URI' value='http://localhost/' />
+<input type='button' id='implict_grant' value='Implict Grant' />
+
+<script src='https://code.jquery.com/jquery-2.2.0.js'></script>
+<script>
+$(document).ready(function() {
+    $('#implict_grant').click(function() {
+        var app_id = $('#app_id').val();
+        var redirect_uri = $('#redirect_uri').val();
+        window.location = 'https://www.binaryqa16.com/oauth/authorize?app_id=' + app_id + '&redirect_uri=' + redirect_uri;
+    });
+
+    var oauthParams = {},
+    queryString = location.hash.substring(1),
+    regex = /([^&=]+)=([^&]*)/g;
+    while (m = regex.exec(queryString)) {
+        oauthParams[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
+    }
+
+    console.log(oauthParams);
+    if (oauthParams['token']) {
+        $('#debug').append("<p>Get token: " + oauthParams['token'] + "</p>")
+        var ws = new WebSocket('wss://www.binaryqa16.com/websockets/v3');
+        ws.onopen = function(evt) {
+            ws.send(JSON.stringify({authorize: oauthParams['token']}));
+        };
+
+        ws.onmessage = function(msg) {
+           // var data = JSON.parse(msg.data);
+           $('#debug').append("<p>" + msg.data + "</p>");
+        };
+    }
+})
+</script>
+
+</body>
+</html>
