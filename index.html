@@ -16,7 +16,7 @@
 $(document).ready(function() {
     $('#implict_grant').click(function() {
         var app_id = $('#app_id').val();
-        window.location = 'https://www2.binary.com/oauth2/authorize?app_id=' + app_id;
+        window.location = 'https://www2.binary.com/oauth2/authorize?app_id=' + app_id + '&scope=read,trade,payments,admin';
     });
 
     var oauthParams = {},
@@ -29,7 +29,7 @@ $(document).ready(function() {
     console.log(oauthParams);
     if (oauthParams['token']) {
         $('#debug').append("<p>Get token: " + oauthParams['token'] + "</p>")
-        var ws = new WebSocket('wss://ws.binaryws.com/websockets/v3');
+        var ws = new WebSocket('wss://www2.binary.com/websockets/v3');
         ws.onopen = function(evt) {
             ws.send(JSON.stringify({authorize: oauthParams['token']}));
         };
