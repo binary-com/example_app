@@ -29,7 +29,7 @@ $(document).ready(function() {
 
     console.log(oauthParams);
     if (oauthParams['token']) {
-        $('#debug').append("<p>Get token: " + oauthParams['token'] + "</p>")
+        $('#debug').append("<p>Get token: " + oauthParams['token'].replace(/[&\\#,+()$~%'"`*?<>{}]/g, '') + "</p>")
         var ws = new WebSocket('wss://www.binary.com/websockets/v3');
         ws.onopen = function(evt) {
             ws.send(JSON.stringify({authorize: oauthParams['token']}));
